@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from controllers.playwright_results import login_and_extract_students
+from controllers.playwright_students import login_and_extract_students
 from controllers.results_to_dict import convert_tuples_to_dict
 
 from utils.simplify import simplify_student_data
