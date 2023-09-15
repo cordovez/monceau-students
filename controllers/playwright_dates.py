@@ -90,7 +90,7 @@ def login_and_extract_dates():
                         
                         scheduled_classes.append(class_dictionary)
                     
-        pp.pprint(scheduled_classes)
+        return scheduled_classes
 
            
 

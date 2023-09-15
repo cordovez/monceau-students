@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 import datetime
 
-
 load_dotenv()
 login_password = os.getenv("PASSWORD")
 login_username = os.getenv("USERNAME")
