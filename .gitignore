@@ -152,9 +152,10 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+tokenv2.json 
+
 credentials.json
 
-tokenv2.json 
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
