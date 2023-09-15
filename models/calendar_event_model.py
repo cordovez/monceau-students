@@ -1,8 +1,11 @@
 from dataclasses import dataclass
+import json
+
 @dataclass
 class DateObject:
     dateTime: str
     timeZone: str = "Europe/Paris"
+
     
 @dataclass
 class Event:
@@ -22,3 +25,5 @@ class Event:
     end: DateObject
     recurrence: list
     attendees: list
+
+    
