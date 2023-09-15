@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from routers.student_routes import student_router
+from routers.events_routes import events_router
 
 
 app = FastAPI()
@@ -20,6 +21,7 @@ app.add_middleware(CORSMiddleware,
 
 
 app.include_router(student_router, prefix='/students')
+app.include_router(events_router, prefix='/events')
 
 @app.get('/')
 def root():

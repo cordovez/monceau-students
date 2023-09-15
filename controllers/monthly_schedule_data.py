@@ -4,7 +4,9 @@ from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 # from dotenv import load_dotenv
 # import os
-# import datetime
+from datetime import datetime
+import pytz
+
 import re
 import pprint
 from collections import namedtuple
@@ -34,7 +36,7 @@ def get_summary_info(html)-> dict:
 
 def get_calendar_dates(html)-> list[tuple]:
     """funtion returns a list of named tuples for the dates on the head of 
-    the source calendar. For example Date(day='Thursday', date='7)
+    the source calendar. For example Date(index=3, day='Thursday', date='7)
     
     The index is included to help me match scheduled classes (cell) to the 
     corresponding date (column)
@@ -83,7 +85,6 @@ def get_scheduled_classes(html) -> list[dict]:
             for cell in scheduled_cells:
                 if cell is not None:
                     class_dictionary = {}
-                    # class_dictionary['time'] = cell.text 
                     class_dictionary['start_time'], class_dictionary['end_time'] = cell.text.split(' - ')
                     class_dictionary['duration'] = info[2].text.split(' ')[1]
                     full_name = student.text.split(', ')
@@ -103,5 +104,37 @@ def get_scheduled_classes(html) -> list[dict]:
                 
     return scheduled_classes
 
-
-            
+def convert_to_datetimes(year:str, month:str, calendar_dates:list, 
+                         events: list):
+    local_tz = pytz.timezone('Europe/Paris')
+    current_year = year
+    current_month = month
+    new_events = []
+    for event in events:
+        new_event = {**event}
+        
+        for date in calendar_dates:
+                if date.index == new_event['column_day']:
+                    new_event['day'] = date.day
+                    new_event['date'] = date.date 
+                    new_event['year'] = current_year
+                    new_event['month'] = current_month
+                    new_events.append(new_event)
+                    
+                    # Datetime
+                    start_str = f"{date.date} {current_month} {current_year}, {new_event['start_time']}"
+                    end_str = f"{date.date} {current_month} {current_year}, {new_event['end_time']}"
+                    
+                    # Parse the start and end times
+                    start_time = datetime.strptime(start_str, '%d %B %Y, %H:%M')
+                    end_time = datetime.strptime(end_str, '%d %B %Y, %H:%M')
+                    
+                    # Apply the local timezone to the times
+                    start_time = local_tz.localize(start_time)
+                    end_time = local_tz.localize(end_time)
+                    
+                    new_event["start_time"] = start_time.isoformat()
+                    new_event["end_time"] = end_time.isoformat()
+                    
+                
+    return new_events
