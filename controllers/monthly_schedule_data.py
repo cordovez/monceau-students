@@ -2,24 +2,24 @@
 
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-import os
-import datetime
+# from dotenv import load_dotenv
+# import os
+# import datetime
 import re
 import pprint
 from collections import namedtuple
-from utils.playwright_html import get_page_html
+# from utils.playwright_html import get_page_html
 
 pp = pprint.PrettyPrinter(indent=4)
 
 
-load_dotenv()
-login_password = os.getenv("PASSWORD")
-login_username = os.getenv("USERNAME")
-base_url = os.getenv("BASE_URL")
+# load_dotenv()
+# login_password = os.getenv("PASSWORD")
+# login_username = os.getenv("USERNAME")
+# base_url = os.getenv("BASE_URL")
 
 
-def get_summary_info(html):
+def get_summary_info(html)-> dict:
     """Function returns the year, month, and hours scheduled"""
     
     page_html = BeautifulSoup(html, 'html.parser')
@@ -32,7 +32,7 @@ def get_summary_info(html):
     return {'year': year, 'month':month, 'hours scheduled': hours_scheduled}
 
 
-def get_calendar_dates(html):
+def get_calendar_dates(html)-> list[tuple]:
     """funtion returns a list of named tuples for the dates on the head of 
     the source calendar. For example Date(day='Thursday', date='7)
     
